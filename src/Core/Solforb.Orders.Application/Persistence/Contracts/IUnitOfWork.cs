@@ -14,7 +14,7 @@ namespace Solforb.Orders.Application.Persistence.Contracts
 		public IGenericRepository<Provider> ProviderRepository { get; }
 
 
-		public Task SaveChagesAsync();
+		public Task Save();
 		public void Dispose();
 	}
 }

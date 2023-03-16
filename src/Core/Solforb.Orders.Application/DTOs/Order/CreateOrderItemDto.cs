@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace Solforb.Orders.Application.DTOs.Order
 {
-	public class UpdateOrderDto : BaseDto, IOrderDto
+	public class CreateOrderItemDto : IOrderItemDto
 	{
-		public string Number { get; set; }
-		public DateTime Date { get; set; }
-		public int ProviderId { get; set; }
-		public List<OrderItemDto> OrderItemsDto { get; set; }
+		public string Name { get; set; }
+		public decimal Quantity { get; set; }
+		public string Unit { get; set; }
 	}
 }

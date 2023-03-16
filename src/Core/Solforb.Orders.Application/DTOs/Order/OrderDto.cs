@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 
 namespace Solforb.Orders.Application.DTOs.Order
 {
-    public class OrderDto : BaseDto
+    public class OrderDto : BaseDto, IOrderDto
     {
         public string Number { get; set; }
         public DateTime Date { get; set; }
         public int ProviderId { get; set; }
-
 		public List<OrderItemDto> OrderItems { get; set; }
 	}
 }

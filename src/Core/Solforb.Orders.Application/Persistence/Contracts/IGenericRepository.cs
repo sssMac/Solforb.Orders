@@ -19,10 +19,10 @@ namespace Solforb.Orders.Application.Persistence.Contracts
 			string includeProperties = "");
 		Task<TEntity> Insert(TEntity entity);
 		Task<bool> Exists(object id);
-		Task Insert(List<TEntity> entity);
+		Task InsertRange(List<TEntity> entity);
 		Task Delete(object id);
 		Task Delete(TEntity entityToDelete);
 		Task Update(TEntity entityToUpdate);
-		Task Update(List<TEntity> entityToUpdate);
+		Task UpdateRange(List<TEntity> entityToUpdate);
 	}
 }

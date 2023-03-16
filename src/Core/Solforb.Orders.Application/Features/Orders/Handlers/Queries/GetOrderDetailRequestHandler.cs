@@ -16,7 +16,7 @@ namespace Solforb.Orders.Application.Features.Orders.Handlers.Queries
 
 		public override async Task<OrderDto> Handle(GetOrderDetailRequest request, CancellationToken cancellationToken)
 		{
-			var order = await _unitOfWork.OrderRepository.GetByID(request.Id);
+			var order = await _unitOfWork.OrderRepository.GetByID(request.Id, "OrderItems");
 
 			return _mapper.Map<OrderDto>(order);
 		}
