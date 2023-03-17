@@ -13,9 +13,6 @@ namespace Solforb.Orders.Application.DTOs.Order.Validators
 		public UpdateOrderDtoValidator(IUnitOfWork unitOfWork)
 		{
 			Include(new IOrderDtoValidator(unitOfWork));
-
-			RuleFor(p => p.Id)
-				.NotNull().WithMessage("{PropertyName} must be present.");
 		}
 	}
 }

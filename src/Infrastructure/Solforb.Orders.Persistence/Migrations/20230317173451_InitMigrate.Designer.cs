@@ -12,7 +12,7 @@ using Solforb.Orders.Persistence;
 namespace Solforb.Orders.Persistence.Migrations
 {
     [DbContext(typeof(OrdersDbContext))]
-    [Migration("20230316195222_InitMigrate")]
+    [Migration("20230317173451_InitMigrate")]
     partial class InitMigrate
     {
         /// <inheritdoc />
@@ -44,6 +44,8 @@ namespace Solforb.Orders.Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProviderId");
 
                     b.ToTable("Orders");
                 });
@@ -92,6 +94,17 @@ namespace Solforb.Orders.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Providers");
+                });
+
+            modelBuilder.Entity("Solforb.Orders.Domain.Order", b =>
+                {
+                    b.HasOne("Solforb.Orders.Domain.Provider", "Provider")
+                        .WithMany()
+                        .HasForeignKey("ProviderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Provider");
                 });
 
             modelBuilder.Entity("Solforb.Orders.Domain.OrderItem", b =>

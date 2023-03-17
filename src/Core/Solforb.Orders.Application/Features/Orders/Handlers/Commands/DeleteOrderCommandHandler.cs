@@ -23,6 +23,7 @@ namespace Solforb.Orders.Application.Features.Orders.Handlers.Commands
 				throw new NotFoundException(nameof(Order), request.Id);
 
 			await _unitOfWork.OrderRepository.Delete(order);
+			await _unitOfWork.Save();
 
 			return Unit.Value;
 		}

@@ -42,6 +42,8 @@ namespace Solforb.Orders.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProviderId");
+
                     b.ToTable("Orders");
                 });
 
@@ -116,6 +118,17 @@ namespace Solforb.Orders.Persistence.Migrations
                             Id = 5,
                             Name = "Fisher K."
                         });
+                });
+
+            modelBuilder.Entity("Solforb.Orders.Domain.Order", b =>
+                {
+                    b.HasOne("Solforb.Orders.Domain.Provider", "Provider")
+                        .WithMany()
+                        .HasForeignKey("ProviderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Provider");
                 });
 
             modelBuilder.Entity("Solforb.Orders.Domain.OrderItem", b =>

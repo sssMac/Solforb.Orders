@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Solforb.Orders.Application.DTOs.Order.Validators
 {
-	public class UpdateOrderItemDtoValidator : AbstractValidator<OrderItemDto>
+	public class UpdateOrderItemDtoValidator : AbstractValidator<UpdateOrderItemDto>
 	{
 		public UpdateOrderItemDtoValidator(IUnitOfWork unitOfWork)
 		{
@@ -16,14 +16,6 @@ namespace Solforb.Orders.Application.DTOs.Order.Validators
 			RuleFor(p => p.Id)
 				.NotNull().WithMessage("{PropertyName} must be present.");
 
-			RuleFor(p => p.OrderId)
-				.GreaterThan(0)
-				.MustAsync(async (id, token) =>
-				{
-					var orderExists = await unitOfWork.OrderRepository.Exists(id);
-					return !orderExists;
-
-				}).WithMessage("{PropertyName} does not exist.");
 		}
 	}
 }

@@ -14,5 +14,7 @@ namespace Solforb.Orders.Domain
 		public int ProviderId { get; set; }
 
 		public List<OrderItem> OrderItems { get; set;}
+
+		public Provider Provider { get; set; }
 	}
 }

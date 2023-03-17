@@ -28,39 +28,35 @@ namespace Solforb.Orders.Application.Features.Orders.Handlers.Commands
 				response.Success = false;
 				response.Message = "Creation failed";
 				response.Errors = validatorResult.Errors.Select(q => q.ErrorMessage).ToList();
-
 			}
 
 			// ORDER ITEM VALIDATION
 			var validatorItems = new CreateOrderItemDtoValidator(_unitOfWork);
-			request.OrderDto.OrderItemsDto.ForEach(async p =>
+			request.OrderDto.OrderItems.ForEach(async p =>
 			{
 				var validationItemResult = await validatorItems.ValidateAsync(p);
-				if (validationItemResult.IsValid)
+				if (!validationItemResult.IsValid)
 				{
 					response.Success = false;
 					response.Message = "Creation failed";
 					response.Errors = validationItemResult.Errors.Select(q => q.ErrorMessage).ToList();
-					
 				}
 			});
 
 			// LOGIC
-			var order = _mapper.Map<Order>(request.OrderDto);
-			var orderItems = _mapper.Map<List<OrderItem>>(request.OrderDto.OrderItemsDto);
+			if (response.Success)
+			{
+				var order = _mapper.Map<Order>(request.OrderDto);
 
-			order = await _unitOfWork.OrderRepository.Insert(order);
+				order = await _unitOfWork.OrderRepository.Insert(order);
+				await _unitOfWork.Save();
 
-			orderItems.ForEach(i => i.OrderId = order.Id);
+				response.Success = true;
+				response.Message = "Creation Successful";
+				response.Id = order.Id;
 
-			await _unitOfWork.OrderItemRepository.InsertRange(orderItems);
-
-			response.Success = true;
-			response.Message = "Creation Successful";
-			response.Id = order.Id;
-
+			}
 			return response;
-
 
 		}
 	}

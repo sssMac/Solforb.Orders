@@ -14,11 +14,11 @@ namespace Solforb.Orders.Persistence.Configurations.Entities
 		public void Configure(EntityTypeBuilder<Provider> builder)
 		{
 			builder.HasData(
-				new Provider { Id = 1, Name= "Adams S." },
-				new Provider { Id = 2, Name= "Bennett H." },
-				new Provider { Id = 3, Name= "Carter T." },
-				new Provider { Id = 4, Name= "Collins B." },
-				new Provider { Id = 5, Name= "Fisher K." }
+				new Provider { Id = 1, Name = "Adams S." },
+				new Provider { Id = 2, Name = "Bennett H." },
+				new Provider { Id = 3, Name = "Carter T." },
+				new Provider { Id = 4, Name = "Collins B." },
+				new Provider { Id = 5, Name = "Fisher K." }
 				);
 		}
 	}

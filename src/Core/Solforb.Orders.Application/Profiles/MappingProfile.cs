@@ -17,6 +17,12 @@ namespace Solforb.Orders.Application.Profiles
 			CreateMap<Order, OrderDto>().ReverseMap();
 			CreateMap<OrderItem, OrderItemDto>().ReverseMap();
 			CreateMap<Provider, ProviderDto>().ReverseMap();
+
+			CreateMap<Order, CreateOrderDto>().ReverseMap();
+			CreateMap<OrderItem, CreateOrderItemDto>().ReverseMap();
+
+			CreateMap<Order, UpdateOrderDto>().ReverseMap();
+			CreateMap<OrderItem, UpdateOrderItemDto>().ReverseMap();
 		}
 	}
 }

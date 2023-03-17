@@ -18,14 +18,15 @@ namespace Solforb.Orders.Application.DTOs.Order.Validators
 
 			RuleFor(p => p.Date)
 				.NotEmpty().WithMessage("{PropertyName} is required.")
-				.GreaterThan(DateTime.UtcNow).WithMessage("{PropertyName} must be greater than date now.");
+				//.GreaterThanOrEqualTo(DateTime.UtcNow).WithMessage("{PropertyName} must be greater than date now.")
+				;
 
 			RuleFor(p => p.ProviderId)
 				.GreaterThan(0)
 				.MustAsync(async (id, token) =>
 				{
 					var providerExists = await _unitOfWork.ProviderRepository.Exists(id);
-					return !providerExists;
+					return providerExists;
 				}).WithMessage("{PropertyName} does not exist.");
 		}
 	}
