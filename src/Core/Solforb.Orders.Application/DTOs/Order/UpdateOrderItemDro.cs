@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Solforb.Orders.Application.DTOs.Order
 {
-	public class UpdateOrderItemDto : BaseDto, IOrderItemDto
+	public class UpdateOrderItemDto : IOrderItemDto
 	{
 		public string Name { get; set; }
 		public decimal Quantity { get; set; }

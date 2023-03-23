@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Solforb.Orders.Application.Persistence.Contracts;
+using Solforb.Orders.Domain;
 using Solforb.Orders.Domain.Common;
 using System;
 using System.Collections.Generic;
@@ -32,12 +33,12 @@ namespace Solforb.Orders.Persistence.Repositories
 			{
 				query = query.Where(filter);
 			}
-
 			foreach (var includeProperty in includeProperties.Split
 				(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
 			{
 				query = query.Include(includeProperty);
 			}
+
 
 			if (orderBy != null)
 			{

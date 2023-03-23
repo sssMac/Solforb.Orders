@@ -26,6 +26,7 @@ namespace Solforb.Orders.Application.DTOs.Order.Validators
 				.NotEmpty().WithMessage("{PropertyName} is required.")
 				.NotNull()
 				.MaximumLength(20).WithMessage("{PropertyName} must not exceed {ComaprisonValue} characters.");
+
 		}
 	}
 }

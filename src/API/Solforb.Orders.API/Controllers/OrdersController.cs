@@ -20,9 +20,10 @@ namespace Solforb.Orders.API.Controllers
 
 		// GET: api/Orders
 		[HttpGet]
-		public async Task<ActionResult<List<OrderDto>>> Get()
+		public async Task<ActionResult<List<OrderDto>>> Get([FromQuery] GetOrderListRequest filter = null)
 		{
-			var orders = await _mediator.Send(new GetOrderListRequest());
+			
+			var orders = await _mediator.Send(filter);
 			return Ok(orders);
 		}
 
@@ -48,8 +49,8 @@ namespace Solforb.Orders.API.Controllers
 		public async Task<ActionResult> Put(int id, [FromBody] UpdateOrderDto order)
 		{
 			var command = new UpdateOrderCommand {Id = id, OrderDto = order };
-			await _mediator.Send(command);
-			return NoContent();
+			var response =  await _mediator.Send(command);
+			return Ok(response);
 		}
 
 		// DELETE: api/Orders/5

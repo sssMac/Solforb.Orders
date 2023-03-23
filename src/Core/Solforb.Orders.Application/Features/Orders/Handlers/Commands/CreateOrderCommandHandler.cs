@@ -18,45 +18,27 @@ namespace Solforb.Orders.Application.Features.Orders.Handlers.Commands
 
 		public override async Task<BaseCommandResponse> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
 		{
-			var response = new BaseCommandResponse();
+			BaseCommandResponse result = BaseCommandResponse.Succeed();
+
 			// ORDER VALIDATION
 			var validator = new CreateOrderDtoValidator(_unitOfWork);
 			var validatorResult = await validator.ValidateAsync(request.OrderDto);
 
+			// IF INVALID
 			if (!validatorResult.IsValid)
 			{
-				response.Success = false;
-				response.Message = "Creation failed";
-				response.Errors = validatorResult.Errors.Select(q => q.ErrorMessage).ToList();
+				result = BaseCommandResponse.Failed(validatorResult.Errors.Select(q => q.ErrorMessage).ToList());
 			}
 
-			// ORDER ITEM VALIDATION
-			var validatorItems = new CreateOrderItemDtoValidator(_unitOfWork);
-			request.OrderDto.OrderItems.ForEach(async p =>
-			{
-				var validationItemResult = await validatorItems.ValidateAsync(p);
-				if (!validationItemResult.IsValid)
-				{
-					response.Success = false;
-					response.Message = "Creation failed";
-					response.Errors = validationItemResult.Errors.Select(q => q.ErrorMessage).ToList();
-				}
-			});
-
-			// LOGIC
-			if (response.Success)
+			// IF VALID
+			if (result.Success)
 			{
 				var order = _mapper.Map<Order>(request.OrderDto);
-
 				order = await _unitOfWork.OrderRepository.Insert(order);
 				await _unitOfWork.Save();
 
-				response.Success = true;
-				response.Message = "Creation Successful";
-				response.Id = order.Id;
-
 			}
-			return response;
+			return result;
 
 		}
 	}

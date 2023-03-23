@@ -10,16 +10,14 @@ namespace Solforb.Orders.Application.DTOs.Order.Validators
 		public IOrderDtoValidator(IUnitOfWork unitOfWork)
 		{
 			_unitOfWork = unitOfWork;
-
+				
 			RuleFor(p => p.Number)
 				.NotEmpty().WithMessage("{PropertyName} is required.")
 				.NotNull()
 				.MaximumLength(50).WithMessage("{PropertyName} must not exceed {ComaprisonValue} characters.");
 
 			RuleFor(p => p.Date)
-				.NotEmpty().WithMessage("{PropertyName} is required.")
-				//.GreaterThanOrEqualTo(DateTime.UtcNow).WithMessage("{PropertyName} must be greater than date now.")
-				;
+				.NotEmpty().WithMessage("{PropertyName} is required.");
 
 			RuleFor(p => p.ProviderId)
 				.GreaterThan(0)
@@ -28,6 +26,7 @@ namespace Solforb.Orders.Application.DTOs.Order.Validators
 					var providerExists = await _unitOfWork.ProviderRepository.Exists(id);
 					return providerExists;
 				}).WithMessage("{PropertyName} does not exist.");
+
 		}
 	}
 }

@@ -8,9 +8,18 @@ namespace Solforb.Orders.Application.Responses
 {
 	public class BaseCommandResponse
 	{
-		public int Id { get; set; }
-		public bool Success { get; set; } = true;
-		public string Message { get; set; }
-		public List<string> Errors { get; set; }
+		
+		public bool Success { get; private set; }
+		public List<string> Errors { get; private set; }
+
+		private BaseCommandResponse( bool success = true, List<string> errors = null)
+		{
+			Success = success;
+			Errors = errors;
+		}
+
+
+		public static BaseCommandResponse Succeed() => new BaseCommandResponse(true);
+		public static BaseCommandResponse Failed(List<string> errors) => new BaseCommandResponse(false, errors);
 	}
 }

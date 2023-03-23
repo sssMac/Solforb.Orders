@@ -18,35 +18,22 @@ namespace Solforb.Orders.Application.Features.Orders.Handlers.Commands
 
 		public override async Task<BaseCommandResponse> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
 		{
-			var response = new BaseCommandResponse();
+			BaseCommandResponse result = BaseCommandResponse.Succeed();
+
 
 			// ORDER VALIDATION
 			var validator = new UpdateOrderDtoValidator(_unitOfWork);
 			var validatorResult = await validator.ValidateAsync(request.OrderDto);
 
+			// IF INVALID
 			if (!validatorResult.IsValid)
 			{
-				response.Success = false;
-				response.Message = "Update failed";
-				response.Errors = validatorResult.Errors.Select(q => q.ErrorMessage).ToList();
+				result = BaseCommandResponse.Failed(validatorResult.Errors.Select(q => q.ErrorMessage).ToList());
 			}
 
-			// ORDER ITEM VALIDATION
-			var validatorItems = new UpdateOrderItemDtoValidator(_unitOfWork);
-			request.OrderDto.OrderItems.ForEach(async p =>
+			// IF VALID
+			if (result.Success)
 			{
-				var validationItemResult = await validatorItems.ValidateAsync(p);
-				if (!validationItemResult.IsValid)
-				{
-					response.Success = false;
-					response.Message = "Update failed";
-					response.Errors = validationItemResult.Errors.Select(q => q.ErrorMessage).ToList();
-				}
-			});
-
-			if (response.Success)
-			{
-				// LOGIC
 				var order = await _unitOfWork.OrderRepository.GetByID(request.Id, "OrderItems");
 
 				_mapper.Map(request.OrderDto, order);
@@ -54,12 +41,9 @@ namespace Solforb.Orders.Application.Features.Orders.Handlers.Commands
 				await _unitOfWork.OrderRepository.Update(order);
 				await _unitOfWork.Save();
 
-				response.Success = true;
-				response.Message = "Update Successful";
-				response.Id = order.Id;
 			}
 
-			return response;
+			return result;
 		}
 	}
 }
